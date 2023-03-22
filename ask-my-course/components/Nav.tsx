@@ -25,7 +25,7 @@ export default function Nav({ path }: NavProps) {
     <Icons.logo className="mr-3 h-6 sm:h-9" />
     <a href="/" className="self-center whitespace-nowrap text-xl font-semibold dark:text-white mr-1">
       CourseGPT
-    </a> by <a href="https://steamship.com">{}Steamship</a>
+    </a>  <a href="https://steamship.com">by Steamship</a>
     
     
   </Navbar.Brand>

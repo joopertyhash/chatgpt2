@@ -1,4 +1,4 @@
-import { Table, Alert} from "flowbite-react";
+import { Table, Spinner} from "flowbite-react";
 import { useState } from "react";
 
 export default function Lectures({ baseUrl }: { baseUrl: string }) {
@@ -64,7 +64,16 @@ export default function Lectures({ baseUrl }: { baseUrl: string }) {
       </Table.Cell>
     </Table.Row>
 
+    
+
      ))}
+     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+      <Table.Cell colSpan={2} >
+          <div className="text-center">
+    <Spinner aria-label="Center-aligned spinner example" /> Loading Lectures
+  </div>
+      </Table.Cell>
+    </Table.Row>
 
 {!lectures && (
       <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
