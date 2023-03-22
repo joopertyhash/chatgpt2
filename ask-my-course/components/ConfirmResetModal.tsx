@@ -15,6 +15,7 @@ export function ConfirmResetModal({ show, setShow }: any) {
   const resetFunction = async () => {
     removeCookie("packageCoordinates")
     removeCookie("id")
+    removeCookie("ownerEmail")
     router.push("/")
     router.reload()
   }
