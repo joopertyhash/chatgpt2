@@ -116,21 +116,19 @@ export function Chat({ baseUrl }: { baseUrl: string }) {
       })
     if (!response.ok) {
       setLoading(false);
-      setError(response.statusText);
+      const {status} = await response.json()
+      setError(status.statusMessage)
       return;
     }
 
     const {answer, sources, is_plausible} = await response.json()
     setLoading(false);
 
-    if (error) {
-      setError(error)
-    } else {
-        setMessages((oldMessages) => [
-          ...oldMessages,
-          { message: answer.trim(), who: 'bot', sources: sources, isPlausible: is_plausible } as Message
-        ])
-    } 
+    setMessages((oldMessages) => [
+      ...oldMessages,
+      { message: answer.trim(), who: 'bot', sources: sources, isPlausible: is_plausible } as Message
+    ])
+    
   }
 
 
