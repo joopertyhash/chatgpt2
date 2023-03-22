@@ -29,7 +29,7 @@ export default function Lectures({ baseUrl }: { baseUrl: string }) {
     setTimeout(async () => {
       console.log("settimeout", baseUrl)
         pollLectures(baseUrl)
-      }, 10_000);
+      }, 2_000);
     }
 
   if (!lectures && !loading) {
