@@ -84,7 +84,7 @@ function Home() {
   return (
     <Page className=" max-w-7xl  flex flex-col gap-12 ">
 
-      {userHandle && <div>Instance owned by {userHandle}</div>}
+      {(userHandle || ownerEmail) && <div>Instance owned by {userHandle||ownerEmail}</div>}
 
       <div className="grid grid-cols-2 gap-4">
         <div className='grid gap-10'> 

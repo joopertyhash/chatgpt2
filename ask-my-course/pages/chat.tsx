@@ -18,20 +18,16 @@ function ChatHome() {
   const [baseUrl, setBaseUrl] = useState<string|undefined>(undefined)
   const {query, isReady} = useRouter()
 
-  const makeBaseUrl = (userHandle?: string, instanceHandle?: string, workspaceHandle?: string, isStaging?: boolean) => {
-    if (userHandle && instanceHandle){
-      if (isStaging){
-        return `https://${userHandle}.apps.staging.steamship.com/${workspaceHandle}/${instanceHandle}`
-    } else {
-      return `https://${userHandle}.steamship.run/${workspaceHandle}/${instanceHandle}`
+  const makeBaseUrl = (userHandle?: string, instanceHandle?: string, workspaceHandle?: string) => {
+    if (workspaceHandle && instanceHandle){
+      return `https://enias.steamship.run/${workspaceHandle}/${instanceHandle}`
     }
-  }
-    return null
+    return undefined
   }
 
   if (isReady && baseUrl === undefined){
-    let {userHandle, instanceHandle, workspaceHandle, isStaging} = query
-    let baseUrl = makeBaseUrl(userHandle as string, instanceHandle as string, workspaceHandle as string, isStaging === 'true') || process.env.NEXT_PUBLIC_BASE_URL as string;
+    let {userHandle, instanceHandle, workspaceHandle} = query
+    let baseUrl = makeBaseUrl(userHandle as string, instanceHandle as string, workspaceHandle as string) || process.env.NEXT_PUBLIC_BASE_URL as string;
     setBaseUrl(baseUrl)
   }
   const errorMessage = (
