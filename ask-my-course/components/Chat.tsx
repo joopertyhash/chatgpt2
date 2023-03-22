@@ -131,12 +131,13 @@ export function Chat({ className, baseUrl}: { className?: string, baseUrl: strin
 
   return (
     <div className={clsx(
-      'overflow-auto flex flex-col justify-between px-2 pt-2',
+      'overflow-auto justify-between px-2 pt-2',
       className
     )}>
       <div className="text-red-600 italic mb-2 self-center	">! This chatbot lives for 24 hours. 
       Click <span className="underline" onClick={() => setShowClaimChatBotModal(true)}>here</span> to
       claim your chatbot for free.</div>
+
       <ClaimModal show={showClaimChatBotModal} setShow={setShowClaimChatBotModal}/>
       {messages.map(({ message, who, sources, isPlausible }, index) => (
         <ChatLine key={index} who={who} message={message} sources={sources} isPlausible={isPlausible} />
