@@ -21,8 +21,8 @@ export function ConfirmResetModal({ show, setShow }: any) {
 
 
   return (
-    typeof document !== 'undefined'  && <React.Fragment>
-    <Modal
+    <div>
+    {typeof document !== 'undefined'  && <Modal
       show={show}
       size="md"
       popup={true}
@@ -53,7 +53,7 @@ export function ConfirmResetModal({ show, setShow }: any) {
           </div>
         </div>
       </Modal.Body>
-    </Modal>
-  </React.Fragment>
+    </Modal>}
+  </div>
   )
 }

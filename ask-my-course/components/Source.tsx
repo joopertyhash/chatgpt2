@@ -13,7 +13,7 @@ export default function Source({ index, page, page_content, source }: { index?: 
     <p className="text-left pt-2  text-blue-600 hover:underline" onClick={()=>setVisible(true)}>
       🧠 Source {index}: {source}  - Page {page}
     </p>
-    <Modal
+    {typeof document !== 'undefined'  && (<Modal
       show={visible}
       onClose={()=>setVisible(false)}
     >
@@ -27,7 +27,7 @@ export default function Source({ index, page, page_content, source }: { index?: 
           </p>
         </div>
       </Modal.Body>
-    </Modal>
+    </Modal>)}
   </div> 
   );
 }

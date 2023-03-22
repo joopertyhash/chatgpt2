@@ -30,7 +30,7 @@ export default function ShareButton() {
             <Icons.share className="mr-2 h-5 w-5" /> Share
             </div>
       </Button>
-      <Modal
+      {typeof document !== 'undefined'  &&  <Modal
     show={showModal}
     onClose={() => setShowModal(false)}
   >
@@ -84,7 +84,7 @@ frameborder="0" {"\n"}
         
       </div>
     </Modal.Body>
-  </Modal>
+  </Modal>}
 
       </React.Fragment>
       }

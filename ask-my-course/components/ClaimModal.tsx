@@ -4,7 +4,8 @@ import {Icons} from "../components/Icons"
 
 export function ClaimModal({ show, setShow }: any) {
   return (
-    typeof document !== 'undefined'  && <Modal
+    <div>
+    {typeof document !== 'undefined'  && <Modal
     show={show}
     onClose={() => setShow(false)}
     className="md"
@@ -32,6 +33,7 @@ export function ClaimModal({ show, setShow }: any) {
     </Button>        </p>
       </div>
     </Modal.Body>
-  </Modal>
+  </Modal>}
+  </div>
   )
 }
