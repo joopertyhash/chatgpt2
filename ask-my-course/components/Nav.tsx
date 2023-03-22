@@ -1,16 +1,17 @@
-import Link from '@vercel/examples-ui/link'
 import { Icons } from "../components/Icons"
 import {Navbar, Button} from "flowbite-react"
-const REPO_URL = 'https://github.com/steamship-core/vercel-examples/tree/main'
 import ShareButton from "../components/ShareButton"
-import { useCookies } from 'react-cookie'
+import {ClaimModal} from "./ClaimModal"
+import React, { useState } from "react";
+import { ConfirmResetModal } from "./ConfirmResetModal";
 
 export interface NavProps {
   path: string
 }
 
 export default function Nav({ path }: NavProps) {
-
+  const [showClaimModal, setShowClaimModal] = useState<boolean>(false)
+  const [showResetModal, setShowResetModal] = useState<boolean>(false)
 
 
   return (
@@ -20,45 +21,33 @@ export default function Nav({ path }: NavProps) {
   rounded={true}
   className="sticky top-z-40 mx-auto max-w-7xl   bg-white dark:bg-slate-900"
 >
-  <Navbar.Brand href="/home">
+  <Navbar.Brand >
     <Icons.logo className="mr-3 h-6 sm:h-9" />
-    <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white mr-1">
+    <a href="/" className="self-center whitespace-nowrap text-xl font-semibold dark:text-white mr-1">
       CourseGPT
-    </span>
-    by Steamship
+    </a> by <a href="https://steamship.com">{}Steamship</a>
+    
+    
   </Navbar.Brand>
   <div className="flex md:order-2">
 
-
-
     <ShareButton/>
-
-
-
-    <Button gradientDuoTone="purpleToBlue" className="mr-1" disabled={true}>
+    <Button onClick={() => setShowClaimModal(true)} gradientDuoTone="purpleToBlue" className="mr-1" >
   <div className="flex flex-row items-center">
           <Icons.claim className="mr-2 h-5 w-5" /> Claim your chatbot
           </div>
     </Button>
+    <ClaimModal show={showClaimModal} setShow={setShowClaimModal}/>
 
-    <Button gradientDuoTone="purpleToBlue" outline={true} href="https://www.steamship.com/packages?tab=Running+Instances">
+    <Button gradientDuoTone="pinkToOrange" onClick={() => setShowResetModal(true)}>
   <div className="flex flex-row items-center">
-          Your chatbots
+  <Icons.plus className="mr-2 h-5 w-5" /> Create another Chatbot
           </div>
     </Button>
-
+    <ConfirmResetModal show={showResetModal} setShow={setShowResetModal} />
     <Navbar.Toggle />
   </div>
     
-  <Navbar.Collapse>
-    <Navbar.Link
-      href="/navbars"
-      active={true}
-    >
-      Create another chatbot
-    </Navbar.Link>
-
-  </Navbar.Collapse>
 </Navbar>
     </div>
   )

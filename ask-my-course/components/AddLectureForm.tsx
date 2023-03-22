@@ -2,16 +2,45 @@ import { Label, TextInput, Button} from "flowbite-react";
 import LoadingDots from "./LoadingDots";
 import { useCookies } from 'react-cookie'
 import React, { useEffect, useState } from "react";
+import { PackageCoordinates, COOKIE_NAMES } from "../pages/index";
 
-
-export default function AddLectureForm({ ownerEmail,  workspaceHandle}: { ownerEmail?:string, workspaceHandle?:string }) {
-  console.log("ownerEmail addlect", ownerEmail|| '')
+export default function AddLectureForm({ ownerEmail, setOwnerEmail, packageCoordinates, setBaseUrl, setPackageCoordinates}: any) { 
   const [lecture, setLecture] = useState('')
-  const [email, setEmail] = useState(ownerEmail || '')
+  const [email, setEmail] = useState(ownerEmail)
   const [loading, setLoading] = useState(false)
-  const [cookie, setCookie] = useCookies(['ownerEmail'])
+  const [cookie, setCookie] = useCookies(COOKIE_NAMES)
 
-  const addLecture = async (youtube_url) => {
+  const setPackageCoordinatesInCookie = (packageCoordinates: PackageCoordinates) => {
+    setCookie("packageCoordinates", packageCoordinates)
+  }
+
+
+  const getAndSetPublicBaseUrl = async (workspaceHandle: string) => {
+    const response = await fetch('/api/get_public_base', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          workspaceHandle: workspaceHandle
+        }),
+      });
+
+      if (!response.ok){
+        console.log("Error when adding Lecture")
+      }
+      const {invocationURL, instanceHandle} = await response.json()
+      const packageCoordinates = {
+        userHandle: email,
+        workspaceHandle: workspaceHandle,
+        instanceHandle: instanceHandle
+      }
+      setBaseUrl(invocationURL.substring(0, invocationURL.length - 1))
+      setPackageCoordinates(packageCoordinates)
+      setPackageCoordinatesInCookie(packageCoordinates)
+  };
+
+  const addLecture = async (youtube_url, workspaceHandle?) => {
     const response = await fetch('/api/add_lecture', {
         method: "POST",
         headers: {
@@ -19,11 +48,10 @@ export default function AddLectureForm({ ownerEmail,  workspaceHandle}: { ownerE
         },
           body: JSON.stringify({
             youtube_url: youtube_url,
-            workspaceHandle: workspaceHandle
+            workspaceHandle: workspaceHandle || packageCoordinates.workspaceHandle
           }),
   
       });
-
       if (!response.ok){
         console.log("Error when adding Lecture")
       }
@@ -31,11 +59,20 @@ export default function AddLectureForm({ ownerEmail,  workspaceHandle}: { ownerE
       setLoading(false)
   };
 
+
+
   const submitForm = async () => {
-    setEmail(email)
+    if(!packageCoordinates) {
+      const workspaceHandle = cookie["id"]
+      await getAndSetPublicBaseUrl(workspaceHandle)
+      addLecture(lecture, workspaceHandle)
+    } else {
+      addLecture(lecture)
+    }
+    setOwnerEmail(email)
     setCookie("ownerEmail", email)
-    addLecture(lecture)
     setLecture('')
+
   };
 
   return (

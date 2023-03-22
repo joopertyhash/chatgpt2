@@ -1,7 +1,7 @@
 import { Button, Modal } from "flowbite-react";
 import React, { useState, useEffect } from "react";
 import { useCookies } from 'react-cookie'
-import {COOKIE_NAMES} from "../pages/index"
+import {COOKIE_NAMES, PackageCoordinates} from "../pages/index"
 import {Icons} from "../components/Icons"
 import { useRouter } from 'next/router'
 
@@ -14,8 +14,9 @@ export default function ShareButton() {
 
 
   useEffect(() => {
-    let {userHandle, instanceHandle, workspaceHandle} = query
-    setSharableUrl(`?userHandle=${userHandle||cookie["userHandle"]}&workspaceHandle=${instanceHandle||cookie["workspaceHandle"]}&instanceHandle=${workspaceHandle||cookie["instanceHandle"]}`)
+    let {userHandle, instanceHandle, workspaceHandle} = query;
+    let packageCoordinates:PackageCoordinates = cookie["packageCoordinates"]
+    setSharableUrl(`?userHandle=${userHandle||packageCoordinates?.userHandle}&workspaceHandle=${workspaceHandle||packageCoordinates?.workspaceHandle}&instanceHandle=${instanceHandle||packageCoordinates?.instanceHandle}`)
   })
 
 

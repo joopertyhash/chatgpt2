@@ -23,11 +23,7 @@ function ChatHome() {
 
 
   useEffect(() => {
-    console.log("useEffect", cookie["ownerEmail"])
     const workspaceHandle = Math.random().toString(36).substring(7) 
-    if (!cookie["workspaceHandle"]) {
-      setCookie("workspaceHandle", workspaceHandle)
-    }
     if (cookie["ownerEmail"]) {
       setOwnerEmail(cookie["ownerEmail"])
     }
@@ -83,9 +79,7 @@ function ChatHome() {
 
   if (isReady && baseUrl === undefined){
     let {userHandle, instanceHandle, workspaceHandle, isStaging} = query
-    console.log("userHandle", userHandle)
     let baseUrl = makeBaseUrl(userHandle as string, instanceHandle as string, workspaceHandle as string, isStaging === 'true') || process.env.NEXT_PUBLIC_BASE_URL as string;
-    console.log("baseUrl", baseUrl)
     if (baseUrl === undefined){
       getPublicBaseUrl()
     } else {
@@ -99,7 +93,7 @@ function ChatHome() {
             <div className="flex">
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-red-800">Error</h3>
-                <p>Front-end not connected.</p>
+                <p>Front-end not connected. Make sure to add Lectures.</p>
                 <br/>
                 <p>If this issue persists, please ping us on <a href="https://steamship.com/discord" className="font-semibold text-gray-900 underline dark:text-white decoration-sky-500">Discord</a>. We&apos;re happy to help. </p>
               </div>
@@ -108,7 +102,6 @@ function ChatHome() {
           )
   return (
     <div className="w-full w-screen flex flex-col gap-12 ">
-            { typeof baseUrl == "undefined" && errorMessage}
              <Chat className="min-h-screen " baseUrl={baseUrl as string}/>
     </div>
   )

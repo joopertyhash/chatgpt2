@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Button } from './Button'
 import { type Message, ChatLine, LoadingChatLine } from './ChatLine'
 import { useCookies } from 'react-cookie'
+import {Button} from 'flowbite-react'
 import { HiOutlineArrowRight, HiOutlineRefresh, HiOutlinePlus } from 'react-icons/hi';
 import LoadingDots from "./LoadingDots";
 import clsx from 'clsx'
-
-const COOKIE_NAME = 'ask-my-course-steamship'
+import { ClaimModal } from './ClaimModal';
 
 // default first message to display in UI (not necessary to define the prompt)
 export const initialMessages: Message[] = [
@@ -63,21 +62,13 @@ const InputMessage = ({ input, setInput, sendMessage, loading }: any) => (
   </div>
 )
 
-export function Chat({ className, baseUrl }: { className?: string, baseUrl: string }) {
+export function Chat({ className, baseUrl}: { className?: string, baseUrl: string}) {
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [input, setInput] = useState('')
   const [chatSessionId, setChatSessionId] = useState(Math.random().toString(36).substring(7))
   const [loading, setLoading] = useState(false)
-  const [cookie, setCookie] = useCookies([COOKIE_NAME])
   const [error, setError] = useState<String | undefined>(undefined);
-
-
-  useEffect(() => {
-    if (!cookie[COOKIE_NAME]) {
-      setCookie(COOKIE_NAME, Math.random().toString(36).substring(7))
-
-    }
-  }, [cookie, setCookie])
+  const [showClaimChatBotModal, setShowClaimChatBotModal] = useState<boolean>(false)
 
   const resetChatSessionId = () => {
     setChatSessionId(Math.random().toString(36).substring(7))
@@ -143,7 +134,10 @@ export function Chat({ className, baseUrl }: { className?: string, baseUrl: stri
       'overflow-auto flex flex-col justify-between px-2 pt-2',
       className
     )}>
-      <div className="text-red-600 italic mb-2 self-center	">! This chatbot lives for 24 hours. Click <span className="underline">here</span> to claim your chatbot for free.</div>
+      <div className="text-red-600 italic mb-2 self-center	">! This chatbot lives for 24 hours. 
+      Click <span className="underline" onClick={() => setShowClaimChatBotModal(true)}>here</span> to
+      claim your chatbot for free.</div>
+      <ClaimModal show={showClaimChatBotModal} setShow={setShowClaimChatBotModal}/>
       {messages.map(({ message, who, sources, isPlausible }, index) => (
         <ChatLine key={index} who={who} message={message} sources={sources} isPlausible={isPlausible} />
       ))}

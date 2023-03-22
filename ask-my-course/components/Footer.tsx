@@ -1,7 +1,4 @@
-import { Label, TextInput, Button} from "flowbite-react";
-import LoadingDots from "./LoadingDots";
-import { useCookies } from 'react-cookie'
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from '@vercel/examples-ui/link'
 import { Icons } from "./Icons"
 
@@ -18,11 +15,11 @@ export default function Footer() {
       rel="noreferrer"
       className="text-black "
     >
-      <Icons.logo
+      <Icons.steamship
         className="inline-block h-6 ml-2 text-primary"
       /> <span className='text-blue-800'>Steamship</span>
     </a>. Come say hi {"->"}
-    <div className="flex md:order-2">
+    <div className="flex md:order-2 ml-2 gap-2">
 <Link
           href="https://github.com/steamship-core/vercel-examples/tree/main/ask-my-book-chatbot"
           target="_blank"

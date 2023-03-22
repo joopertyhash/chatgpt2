@@ -9,7 +9,7 @@ export default async function handler(
 
   try {
     const { youtube_url, workspaceHandle } = req.body as any;
-    console.log("add_lecture", workspaceHandle)
+
     const pkg = await getPackageInstance(workspaceHandle)
     const resp = await pkg.invoke('add_lecture',{"youtube_url": youtube_url}, "POST")
     const response = resp.data

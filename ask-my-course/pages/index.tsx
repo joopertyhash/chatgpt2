@@ -8,12 +8,12 @@ import { useCookies } from 'react-cookie'
 import type { ReactElement } from 'react'
 import Layout from '../components/Layout'
 
-export const COOKIE_NAMES = ["userHandle", "workspaceHandle", "instanceHandle", "ownerEmail"]
+export const COOKIE_NAMES = ["id", "ownerEmail", "packageCoordinates"]
 
 export type PackageCoordinates = {
-  userHandle?: string
-  workspaceHandle?: string
-  instanceHandle?: string
+  userHandle: string
+  workspaceHandle: string
+  instanceHandle: string
 }
 
 
@@ -25,78 +25,49 @@ function Home() {
   const {query, isReady} = useRouter()
 
 
+  const makeBaseUrl = (packageCoordinates?: PackageCoordinates) => {
+    if (packageCoordinates){
+      setBaseUrl(`https://enias.steamship.run/${packageCoordinates.workspaceHandle}/${packageCoordinates.instanceHandle}`)
+    } else if (process.env.NEXT_PUBLIC_BASE_URL) {
+      setBaseUrl(process.env.NEXT_PUBLIC_BASE_URL as string)
+    } 
+  }
+
+  let {userHandle, instanceHandle, workspaceHandle} = query
+  if (userHandle && packageCoordinates?.userHandle != userHandle) {
+    console.log("overriding ", userHandle, workspaceHandle, instanceHandle)
+    const newPackageCoordinates = {
+      userHandle: userHandle as string,
+      workspaceHandle: workspaceHandle as string,
+      instanceHandle: instanceHandle as string
+    }
+    setPackageCoordinates(newPackageCoordinates)
+    makeBaseUrl(newPackageCoordinates)
+  }
+  if (!userHandle && !packageCoordinates && baseUrl){
+    setBaseUrl(undefined)
+  }
+
   useEffect(() => {
-    console.log("useEffect", cookie["ownerEmail"])
-    const workspaceHandle = Math.random().toString(36).substring(7) 
-    if (!cookie["workspaceHandle"]) {
-      setCookie("workspaceHandle", workspaceHandle)
+    if (!cookie["id"]) {
+      setCookie("id", Math.random().toString(36).substring(7) )
     }
     if (cookie["ownerEmail"]) {
       setOwnerEmail(cookie["ownerEmail"])
     }
+    if (cookie["packageCoordinates"]) {
+      setPackageCoordinates(cookie["packageCoordinates"])
+      makeBaseUrl(cookie["packageCoordinates"])
+    }
   }, [cookie, setCookie])
 
-  const setPackageCoordinatesInCookie = ({ userHandle, workspaceHandle, instanceHandle}: PackageCoordinates) => {
-    console.log("setPackageCoordinatesInCookie", userHandle)
-    setCookie("userHandle", userHandle)
-    setCookie("workspaceHandle", workspaceHandle)
-    setCookie("instanceHandle", instanceHandle)
-  }
-
-  const getPublicBaseUrl = async () => {
-    const response = await fetch('/api/get_public_base', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          workspaceHandle: cookie["workspaceHandle"]
-        }),
-      });
-
-      if (!response.ok){
-        console.log("Error when adding Lecture")
-      }
-      const {invocationURL, instanceHandle} = await response.json()
-      console.log("invocationUrl", invocationURL, instanceHandle)
-      setBaseUrl(invocationURL.substring(0, invocationURL.length - 1))
-      const packageCoordinates = {
-        userHandle: 'enias',
-        workspaceHandle: cookie["workspaceHandle"],
-        instanceHandle: instanceHandle
-      }
-      setPackageCoordinates(packageCoordinates)
-      setPackageCoordinatesInCookie(packageCoordinates)
+  const isAdmin = () => {
+    return !ownerEmail || (ownerEmail && (!userHandle || (userHandle && ownerEmail == userHandle)))
   };
 
 
-  const makeBaseUrl = (userHandle?: string, instanceHandle?: string, workspaceHandle?: string, isStaging?: boolean) => {
-    if (userHandle && instanceHandle){
-      if (isStaging){
-        return `https://${userHandle}.apps.staging.steamship.com/${workspaceHandle}/${instanceHandle}`
-    } else {
-      return `https://${userHandle}.steamship.run/${workspaceHandle}/${instanceHandle}`
-    }
-  }
-    return null
-  }
-
-  let {userHandle} = query
 
 
-  if (isReady && baseUrl === undefined){
-    let {userHandle, instanceHandle, workspaceHandle, isStaging} = query
-    console.log("userHandle", userHandle)
-    let baseUrl = makeBaseUrl(userHandle as string, instanceHandle as string, workspaceHandle as string, isStaging === 'true') || process.env.NEXT_PUBLIC_BASE_URL as string;
-    console.log("baseUrl", baseUrl)
-    if (baseUrl === undefined){
-      getPublicBaseUrl()
-    } else {
-      setBaseUrl(baseUrl)
-    }
-  
-
-  }
   const errorMessage = (
         <div className="rounded-md bg-red-50 p-4">
             <div className="flex">
@@ -109,24 +80,26 @@ function Home() {
             </div>
           </div>
           )
+
   return (
     <Page className=" max-w-7xl  flex flex-col gap-12 ">
 
-      {!userHandle && ownerEmail && <div>Instance owned by {ownerEmail}</div>}
+      {userHandle && <div>Instance owned by {userHandle}</div>}
 
       <div className="grid grid-cols-2 gap-4">
         <div className='grid gap-10'> 
-        {!userHandle && 
+        {isAdmin() && 
         <div>
           <Text className="mb-5" variant="h2">⚙️ Add Lectures</Text>
-          <AddLectureForm ownerEmail={ownerEmail} workspaceHandle={packageCoordinates?.workspaceHandle}/>
+          <AddLectureForm ownerEmail={ownerEmail} 
+                setOwnerEmail={setOwnerEmail} packageCoordinates={packageCoordinates} setBaseUrl={setBaseUrl} setPackageCoordinates={setPackageCoordinates} />
         </div>}
         
         <div>
         <section className="flex flex-col gap-6 " >
         <Text className="mb-5" variant="h2">📚 Lectures </Text>
 
-        { baseUrl && <Lectures baseUrl={baseUrl as string}/>}
+        { baseUrl && isReady && <Lectures baseUrl={baseUrl as string}/>}
       </section>
 
         </div>
@@ -137,7 +110,7 @@ function Home() {
         <Text className="mb-5" variant="h2">💬 Your chatbot</Text>
 
       <section className="flex flex-col gap-3 ">
-            { typeof baseUrl == "undefined" && errorMessage}
+            {/* { typeof baseUrl == "undefined" && errorMessage} */}
              <Chat className="h-[42rem] rounded-2xl border-zinc-100 lg:border lg:p-6" baseUrl={baseUrl as string}/>
       </section>
       </div>

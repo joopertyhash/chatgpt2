@@ -10,7 +10,6 @@ export default async function handler(
     const { workspaceHandle } = req.body as any;
 
     const pkg = await getPackageInstance(workspaceHandle)
-    console.log(pkg)
     const {invocationURL, handle: instanceHandle} = pkg
     return res.json({ invocationURL, instanceHandle, workspaceHandle })
   } catch (ex) {

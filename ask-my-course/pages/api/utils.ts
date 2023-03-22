@@ -3,8 +3,6 @@ import { getSteamshipPackage } from '@steamship/steamship-nextjs'
 
 export default async function getPackageInstance(workspaceHandle) {
 
-  console.log("calling getPackageInstance", workspaceHandle)
-
   const packageHandle = process.env.STEAMSHIP_PACKAGE_HANDLE as string;
 
     if (!process.env.STEAMSHIP_API_KEY) {
@@ -19,6 +17,5 @@ export default async function getPackageInstance(workspaceHandle) {
       pkg: packageHandle,
       config: {index_name: `${packageHandle}-db`} as Map<string, any>
     })
-    console.log(pkg)
     return pkg
 }

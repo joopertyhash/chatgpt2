@@ -1,10 +1,8 @@
 import type { FC, ReactNode } from 'react'
 import Head from 'next/head.js'
 import Nav, { NavProps } from './Nav'
-import Link from '@vercel/examples-ui/link'
 import Footer from "../components/Footer"
 import { ComponentType } from 'react'
-import { Icons } from "./Icons"
 
 export interface LayoutProps extends NavProps {
   children?: ReactNode
