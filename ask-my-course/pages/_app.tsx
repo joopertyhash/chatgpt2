@@ -6,6 +6,7 @@ import type { NextPage } from 'next'
 import { useEffect } from "react";
 import * as gtag from "../utils/ga"
 import { useRouter } from 'next/router'
+import { Analytics } from '@vercel/analytics/react'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -48,7 +49,10 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
           });
         `}
             </Script>
-    {getLayout(<Component {...pageProps} />)}</div>
+    {getLayout(<Component {...pageProps} />)}
+    <Analytics />
+    </div>
+
 }
 
 export default App
