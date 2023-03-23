@@ -41,7 +41,7 @@ export default function ShareButton() {
       <div className="space-y-6">
         <h3 className="text-lg font-medium leading-6 text-gray-900">Share this page</h3>
         <div className="sm:flex sm:flex-row-reverse"><pre className=" overflow-auto text-xs bg-slate-100 rounded p-2"><code>
-        https://ask-my-course.vercel.app{sharableUrl}
+        https://ask-my-course.steamship.com{sharableUrl}
 </code></pre>
 
       </div>
@@ -57,7 +57,7 @@ export default function ShareButton() {
 
 
         <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse"><pre className=" overflow-auto text-xs bg-slate-100 rounded p-2"><code>&lt;iframe
-src="https://ask-my-course.vercel.app/chat{sharableUrl}" {"\n"}
+src="https://ask-my-course.steamship.com/chat{sharableUrl}" {"\n"}
 width="100%" {"\n"}
 height="700" {"\n"}
 frameborder="0" {"\n"}
@@ -76,7 +76,7 @@ frameborder="0" {"\n"}
       <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse"><pre className=" overflow-auto text-xs bg-slate-100 rounded p-2">
       <code>&lt;script
   src="https://cdn.jsdelivr.net/gh/EniasCailliau/chatbot@main/index.js"
-  id="https://ask-my-course.vercel.app/chat{sharableUrl}"
+  id="https://ask-my-course.steamship.com/chat{sharableUrl}"
 &gt;&lt;/script&gt;</code>
 </pre></div>
 
