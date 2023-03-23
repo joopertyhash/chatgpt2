@@ -4,7 +4,7 @@ import '@vercel/examples-ui/globals.css'
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
 import { useEffect } from "react";
-import * as gtag from "./utils/ga"
+import * as gtag from "../utils/ga"
 import { useRouter } from 'next/router'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
