@@ -3,6 +3,9 @@ import Script from 'next/script'
 import '@vercel/examples-ui/globals.css'
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
+import { useEffect } from "react";
+import * as gtag from "./utils/ga"
+import { useRouter } from 'next/router'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -15,6 +18,18 @@ type AppPropsWithLayout = AppProps & {
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
+
+  const router = useRouter();
+
+  useEffect(() => {
+      const handleRouteChange = (url: URL) => {
+          gtag.pageview(url);
+      };
+      router.events.on('routeChangeComplete', handleRouteChange);
+      return () => {
+          router.events.off('routeChangeComplete', handleRouteChange);
+      };
+  }, [router.events]);
 
   const GA_TRACKING_ID = "G-ZNHV1G0GH8"
   return <div> 
@@ -33,7 +48,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
           });
         `}
             </Script>
-    getLayout(<Component {...pageProps} />)</div>
+    {getLayout(<Component {...pageProps} />)}</div>
 }
 
 export default App
