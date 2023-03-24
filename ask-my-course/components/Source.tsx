@@ -18,7 +18,7 @@ export default function Source({ index, page, page_content, source, start_time, 
   }
 
   const parsed_content = page_content?.replace(/↓/g,'\n');
-  const embed_source = source?.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/")
+  const embed_source = source?.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/").replace("https://youtu.be/", "https://www.youtube.com/embed/")
   let t_start = 0
   if (start_time){
     t_start = Math.round(    start_time / 1000)
