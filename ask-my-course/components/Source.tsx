@@ -21,10 +21,8 @@ export default function Source({ index, page, page_content, source, start_time, 
   const embed_source = source?.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/")
   let t_start = 0
   if (start_time){
-    t_start = start_time / 1000
+    t_start = Math.round(    start_time / 1000)
   }
-  console.log(t_start, toHoursAndMinutes(t_start))
-
   return (
      <div key={index} >
     <p className="text-left pt-2  text-blue-600 hover:underline" onClick={()=>setVisible(true)}>
