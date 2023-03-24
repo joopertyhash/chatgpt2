@@ -6,11 +6,9 @@ export default function Lectures({ baseUrl }: { baseUrl: string }) {
   const [lectures, setLectures] = useState<String[]|null>(null);
   const [error, setError] = useState<String|null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  console.log("lectures base", baseUrl)
 
   const pollLectures = async (baseUrl) => {
     setLoading(true)
-    console.log("polling lectures", baseUrl + '/lectures')
     const response = await fetch(baseUrl + '/lectures', {
       method: 'GET',
       headers: {
@@ -27,7 +25,6 @@ export default function Lectures({ baseUrl }: { baseUrl: string }) {
     setLectures(lectures)
 
     setTimeout(async () => {
-      console.log("settimeout", baseUrl)
         pollLectures(baseUrl)
       }, 2_000);
     }

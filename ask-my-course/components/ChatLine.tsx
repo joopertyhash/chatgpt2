@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import Balancer from 'react-wrap-balancer'
 import Source from "../components/Source";
 import { HiShieldExclamation } from 'react-icons/hi';
+import { start } from 'repl';
 
 const BalancerWrapper = (props: any) => <Balancer {...props} />
 
@@ -84,9 +85,16 @@ export function ChatLine({ who = 'bot', message, sources, isPlausible}: Message)
               </p>
               {sources && sources.map((source_doc, index) => {
                               const {page_content, metadata} = source_doc
-                              const {page, source} = metadata
+                              const {page, source, start_time, title} = metadata
                               return (
-                                   <Source key={index} index={index+1} page={page} page_content={page_content} source={source} />
+                                   <Source key={index} 
+                                          index={index+1} 
+                                          page={page} 
+                                          page_content={page_content} 
+                                          source={source}
+                                          start_time={start_time}
+                                          title={title}
+                                          />
                               )
                         })}
             </div>

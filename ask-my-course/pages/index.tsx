@@ -35,7 +35,6 @@ function Home() {
 
   let {userHandle, instanceHandle, workspaceHandle} = query
   if (userHandle && packageCoordinates?.userHandle != userHandle) {
-    console.log("overriding ", userHandle, workspaceHandle, instanceHandle)
     const newPackageCoordinates = {
       userHandle: userHandle as string,
       workspaceHandle: workspaceHandle as string,

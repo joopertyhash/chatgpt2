@@ -6,7 +6,7 @@ import { PackageCoordinates, COOKIE_NAMES } from "../pages/index";
 
 export default function AddLectureForm({ ownerEmail, setOwnerEmail, packageCoordinates, setBaseUrl, setPackageCoordinates}: any) { 
   const [lecture, setLecture] = useState('')
-  const [email, setEmail] = useState(ownerEmail)
+  const [email, setEmail] = useState(ownerEmail||'')
   const [loading, setLoading] = useState(false)
   const [cookie, setCookie] = useCookies(COOKIE_NAMES)
 
