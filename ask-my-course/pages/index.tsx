@@ -120,7 +120,10 @@ function Home() {
 
 Home.getLayout = function getLayout(page: ReactElement) {
   return (
-    <Layout path="">
+    <Layout  title="CourseGPT - ChatGPT for studying"
+      path="CourseGPT - Chatbot for studying"
+      description="Learn from online lectures and courses by training your own chatbot."
+  >
       {page}
     </Layout>
   )
