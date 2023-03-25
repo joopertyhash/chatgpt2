@@ -61,7 +61,7 @@ function Home() {
   }, [cookie, setCookie])
 
   const isAdmin = () => {
-    return !ownerEmail || (ownerEmail && (!userHandle || (userHandle && ownerEmail == userHandle)))
+    return (!ownerEmail && !userHandle) || (ownerEmail && (!userHandle || (userHandle && ownerEmail == userHandle)))
   };
 
 
