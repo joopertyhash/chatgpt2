@@ -116,7 +116,6 @@ export function Chat({ className, baseUrl}: { className?: string, baseUrl: strin
     }
 
     const {answer, sources, is_plausible} = await response.json()
-    console.log(answer, sources)
     setLoading(false);
 
     if (error) {

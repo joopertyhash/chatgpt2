@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import getPackageInstance from './utils';
+import { createClient } from '@supabase/supabase-js'
 
 
 export default async function handler(
@@ -8,10 +9,20 @@ export default async function handler(
 ) {
 
   try {
-    const { youtube_url, workspaceHandle } = req.body as any;
+    const { youtubeUrl, userHandle, workspaceHandle } = req.body as any;
 
     const pkg = await getPackageInstance(workspaceHandle)
-    const resp = await pkg.invoke('add_lecture',{"youtube_url": youtube_url}, "POST")
+    const resp = await pkg.invoke('add_lecture',{"youtube_url": youtubeUrl}, "POST")
+
+    const supabaseKey = process.env.SUPABASE_KEY as string;
+    
+    const supabase = createClient('https://hgzosttukbwgfyxzswmz.supabase.co',
+    supabaseKey)
+
+    const { error } = await supabase
+    .from('add_lecture')
+    .insert({ userHandle: userHandle, youtubeUrl: youtubeUrl, workspaceHandle:workspaceHandle })
+
     const response = resp.data
     return res.json({ response })
   } catch (ex) {

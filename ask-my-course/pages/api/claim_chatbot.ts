@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import getPackageInstance from './utils';
 
 import { createClient } from '@supabase/supabase-js'
 
@@ -20,7 +19,6 @@ export default async function handler(
     .from('claims')
     .insert({ userHandle: userHandle, workspaceHandle: workspaceHandle, instanceHandle: instanceHandle })
 
-    console.log(error, "claim")
     return res.json({ error })
   } catch (ex) {
     const awaitedEx = (await ex) as any;

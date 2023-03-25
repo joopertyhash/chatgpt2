@@ -1,7 +1,7 @@
-import { Label, TextInput, Button} from "flowbite-react";
+import { Button} from "flowbite-react";
 import LoadingDots from "./LoadingDots";
 import { useCookies } from 'react-cookie'
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { PackageCoordinates, COOKIE_NAMES } from "../pages/index";
 
 export default function AddLectureForm({ ownerEmail, setOwnerEmail, packageCoordinates, setBaseUrl, setPackageCoordinates}: any) { 
@@ -40,14 +40,15 @@ export default function AddLectureForm({ ownerEmail, setOwnerEmail, packageCoord
       setPackageCoordinatesInCookie(packageCoordinates)
   };
 
-  const addLecture = async (youtube_url, workspaceHandle?) => {
+  const addLecture = async (youtubeUrl, userHandle?, workspaceHandle?) => {
     const response = await fetch('/api/add_lecture', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
           body: JSON.stringify({
-            youtube_url: youtube_url,
+            youtubeUrl: youtubeUrl,
+            userHandle: userHandle || packageCoordinates.userHandle,
             workspaceHandle: workspaceHandle || packageCoordinates.workspaceHandle
           }),
   
@@ -65,7 +66,7 @@ export default function AddLectureForm({ ownerEmail, setOwnerEmail, packageCoord
     if(!packageCoordinates) {
       const workspaceHandle = cookie["id"]
       await getAndSetPublicBaseUrl(workspaceHandle)
-      addLecture(lecture, workspaceHandle)
+      addLecture(lecture, email, workspaceHandle)
     } else {
       addLecture(lecture)
     }
