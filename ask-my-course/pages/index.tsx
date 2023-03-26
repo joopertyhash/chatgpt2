@@ -91,7 +91,7 @@ function Home() {
         <div>
           <div className="prose"> 
             <img className="center w-48 mx-auto" src="/brb.jpeg" />
-            <h2 className="text-xl">We'll help you make yours soon! Demand has been extremely high so we're onboarding via our <a href="https://steamship.com/discord">for now</a>.</h2>
+            <h2 className="text-xl">We'll help you make yours soon! Demand has been extremely high so we're onboarding via our <a className="underline" href="https://steamship.com/discord">Discord</a>for now.</h2>
           </div>
           {/* <Text className="mb-5" variant="h2">⚙️ Add Lectures</Text>
           <AddLectureForm ownerEmail={ownerEmail} 
