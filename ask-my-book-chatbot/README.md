@@ -44,7 +44,6 @@ ship deploy
 
 ```commandline
 cd _api
-pip install -r requirements.dev.txt
 python upload/upload_local.py
 # or 
 python upload/upload_remote.py
