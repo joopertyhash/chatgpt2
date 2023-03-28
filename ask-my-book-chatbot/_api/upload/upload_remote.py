@@ -1,26 +1,19 @@
 """Script to upload books to your vector index by running the ask-my-book package remotely."""
-import re
-from pathlib import Path
-from typing import Optional, Set
 
-import click
-from langchain.document_loaders import PagedPDFSplitter
 from steamship import Steamship
 from steamship.utils.url import Verb
-from steamship_langchain.vectorstores import SteamshipVectorStore
 
 # Step 1: Give your index a name
-from api import AskMyBook
-
-INDEX_NAME = "test-enias-2"
+INDEX_NAME = "your-index-name"
+PACKAGE_HANDLE = "ask-my-book-chat-api"
 
 if __name__ == "__main__":
     client = Steamship(workspace=INDEX_NAME)
 
     package_instance = client.use(
-        "ask-my-book-chat-api", config={"index_name": INDEX_NAME}, version="0.2.0"
+        PACKAGE_HANDLE, config={"index_name": INDEX_NAME}, version="0.2.0"
     )
-    print(package_instance.invocation_url)
+    print("BASE_URL:", package_instance.invocation_url)
     print(package_instance.package_version_handle)
 
     docs = package_instance.invoke("documents", verb=Verb.GET)

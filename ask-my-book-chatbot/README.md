@@ -35,17 +35,19 @@ Think of it as a host for Vercel-style API functions, but with a managed, statef
 Deploy your Steamship stack from this project's root folder with:
 
 ```bash
-pip install steamship
-cd steamship
+cd _api
+pip install -r requirements.txt
 ship deploy
 ```
 
 ### Add your books
 
 ```commandline
-cd steamship
+cd _api
 pip install -r requirements.dev.txt
-python upload/upload.py
+python upload/upload_local.py
+# or 
+python upload/upload_remote.py
 ```
 
 ### Set your environment variables
@@ -56,11 +58,15 @@ Rename [`.env.example`](.env.example) to `.env.local`:
 cp .env.example .env.local
 ```
 
-Then:
+Then update `NEXT_PUBLIC_BASE_URL` with the base invocation url of package instance. You can get this using: 
 
-1. update `STEAMSHIP_API_KEY` with your [Steamship API Key](https://www.steamship.com/account/api).
-2. update `STEAMSHIP_PACKAGE_HANDLE` with the package name you selected when deploying your Steamship Stack.
-3. update `NEXT_PUBLIC_INDEX_NAME` with the index name you selected while adding your books.
+```python
+package_instance = client.use(
+        PACKAGE_HANDLE, config={"index_name": INDEX_NAME}, version="0.2.0"
+    )
+print("BASE_URL:", package_instance.invocation_url)
+```
+
 ### Run your web app
 
 Run your Next.js stack in development mode:

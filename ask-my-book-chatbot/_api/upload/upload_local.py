@@ -1,13 +1,15 @@
 """Script to upload books to your vector index by running the ask-my-book package locally."""
+import sys
 from pathlib import Path
 
 import click
 from steamship import Steamship
 
 # Step 1: Give your index a name
+sys.path.append(str(Path(__file__).parent.parent.resolve()))
 from api import AskMyBook
 
-INDEX_NAME = "test-enias-2"
+INDEX_NAME = "your-index-name"
 
 # Step 2: List the books or folders of books you want to add to your index
 BOOKS_OR_BOOK_FOLDERS = [
