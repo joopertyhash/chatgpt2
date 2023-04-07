@@ -3,15 +3,17 @@
 from steamship import Steamship
 from steamship.utils.url import Verb
 
-# Step 1: Give your index a name
-INDEX_NAME = "your-index-name"
+# Step 1: Give your database a name
+DB_NAME = "your-db-name"
+
 PACKAGE_HANDLE = "ask-my-book-chat-api"
 
 if __name__ == "__main__":
-    client = Steamship(workspace=INDEX_NAME)
+    client = Steamship(workspace=DB_NAME)
 
     package_instance = client.use(
-        PACKAGE_HANDLE, config={"index_name": INDEX_NAME}, version="0.2.0"
+        PACKAGE_HANDLE,
+        fetch_if_exists=True
     )
     print("BASE_URL:", package_instance.invocation_url)
     print(package_instance.package_version_handle)

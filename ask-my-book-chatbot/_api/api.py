@@ -8,8 +8,8 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.document_loaders import PagedPDFSplitter
 from pydantic.networks import HttpUrl
 from steamship import MimeTypes, SteamshipError
-from steamship.data.embeddings import EmbeddingIndex
 from steamship import Steamship
+from steamship.data.embeddings import EmbeddingIndex
 from steamship.invocable import Config
 from steamship.invocable import PackageService, post, get
 from steamship_langchain.llms.openai import OpenAIChat
@@ -18,8 +18,8 @@ from steamship_langchain.vectorstores import SteamshipVectorStore
 from chat_history import ChatHistory
 from constants import DEBUG
 from fact_checker import FactChecker
-from prompts import CONDENSE_QUESTION_PROMPT, ANSWER_QUESTION_PROMPT_SELECTOR
 from ledger import Ledger
+from prompts import CONDENSE_QUESTION_PROMPT, ANSWER_QUESTION_PROMPT_SELECTOR
 
 langchain.llm_cache = None
 import requests
@@ -32,17 +32,16 @@ SUPPORTED_MIME_TYPES = {
 
 class AskMyBook(PackageService):
     class AskMyBookConfig(Config):
-        index_name: str
         model_name: str = "gpt-3.5-turbo"
-        default_chat_session_id: Optional[str] = "default"
 
     config: AskMyBookConfig
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.index_name = self.client.config.workspace_handle
         self.qa_chatbot_chain = self._get_qa_chain()
         self.fact_checker = FactChecker(self.client)
-        self.ledger = Ledger(self.client, self.config.index_name)
+        self.ledger = Ledger(self.client, self.index_name)
 
     @classmethod
     def config_cls(cls) -> Type[Config]:
@@ -97,7 +96,7 @@ class AskMyBook(PackageService):
             self, question: str, chat_session_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """Answer a given question using a collection of source documents."""
-        chat_session_id = chat_session_id or self.config.default_chat_session_id
+        chat_session_id = chat_session_id or "default"
         chat_history = ChatHistory(self.client, chat_session_id)
 
         result = self.qa_chatbot_chain(
@@ -125,7 +124,7 @@ class AskMyBook(PackageService):
         """Get the vector store index."""
         return SteamshipVectorStore(
             client=self.client,
-            index_name=self.config.index_name,
+            index_name=self.index_name,
             embedding="text-embedding-ada-002",
         )
 
@@ -154,9 +153,9 @@ class AskMyBook(PackageService):
 
 
 if __name__ == '__main__':
-    index_name = "test-enias"
-    client = Steamship(workspace=index_name)
-    amb = AskMyBook(client, config={"index_name": index_name})
+    db_name = "your-db-name"
+    client = Steamship(workspace=db_name)
+    amb = AskMyBook(client)
 
     print(amb.get_indexed_documents())
     # response = amb.answer("What is the color of a banana?")

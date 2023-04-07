@@ -5,11 +5,12 @@ from pathlib import Path
 import click
 from steamship import Steamship
 
-# Step 1: Give your index a name
 sys.path.append(str(Path(__file__).parent.parent.resolve()))
 from api import AskMyBook
 
-INDEX_NAME = "your-index-name"
+
+# Step 1: Give your database a name
+DB_NAME = "your-db-name"
 
 # Step 2: List the books or folders of books you want to add to your index
 BOOKS_OR_BOOK_FOLDERS = [
@@ -17,9 +18,9 @@ BOOKS_OR_BOOK_FOLDERS = [
 ]
 
 if __name__ == "__main__":
-    client = Steamship(workspace=INDEX_NAME)
+    client = Steamship(workspace=DB_NAME)
 
-    amb = AskMyBook(client, config={"index_name": INDEX_NAME})
+    amb = AskMyBook(client)
 
     documents = amb.get_indexed_documents()
 
@@ -42,4 +43,3 @@ if __name__ == "__main__":
             amb.add_document_from_path(data_path, data_path.name)
 
     print("Your documents are successfully added to the index")
-    print("You can query your documents on this endpoint: ")

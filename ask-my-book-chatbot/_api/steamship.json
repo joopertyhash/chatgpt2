@@ -1,7 +1,7 @@
 {
 	"type": "package",
 	"handle": "ask-my-book-chat-api",
-	"version": "0.2.0",
+	"version": "1.0.0",
 	"description": null,
 	"author": "Enias",
 	"entrypoint": "Unused",
@@ -15,20 +15,10 @@
 		]
 	},
 	"configTemplate": {
-		"index_name": {
-			"type": "string",
-			"description": null,
-			"default": null
-		},
 		"model_name": {
 			"type": "string",
 			"description": null,
 			"default": "gpt-3.5-turbo"
-		},
-		"default_chat_session_id": {
-			"type": "string",
-			"description": null,
-			"default": "default"
 		}
 	},
 	"steamshipRegistry": {
