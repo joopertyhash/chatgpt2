@@ -38,7 +38,7 @@ class AskMyBook(PackageService):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.index_name = self.client.config.workspace_handle
+        self.index_name = self.client.config.workspace_handle + "_index"
         self.qa_chatbot_chain = self._get_qa_chain()
         self.fact_checker = FactChecker(self.client)
         self.ledger = Ledger(self.client, self.index_name)
