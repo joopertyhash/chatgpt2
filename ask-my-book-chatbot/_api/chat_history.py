@@ -35,8 +35,7 @@ class ChatHistory:
             return None
 
     def _get_or_create_chat_history_file(self) -> File:
-        convo_file = self._get_chat_history_file()
-        if convo_file:
+        if convo_file := self._get_chat_history_file():
             return convo_file
         return File.create(self.client, handle=self.chat_session_id, blocks=[])
 
@@ -52,17 +51,17 @@ class ChatHistory:
     def load(self) -> List[Tuple[str, str]]:
         """Return history buffer."""
         convo_file = self._get_chat_history_file()
-        if not convo_file:
-            return []
-
-        return [
-            json.loads(block.text)
-            for block in sorted(convo_file.blocks, key=_block_sort_key)
-        ]
+        return (
+            [
+                json.loads(block.text)
+                for block in sorted(convo_file.blocks, key=_block_sort_key)
+            ]
+            if convo_file
+            else []
+        )
 
     def clear(self) -> None:
-        convo_file = self._get_chat_history_file()
-        if convo_file:
+        if convo_file := self._get_chat_history_file():
             convo_file.delete()
 
 
