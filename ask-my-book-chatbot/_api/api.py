@@ -38,7 +38,7 @@ class AskMyBook(PackageService):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.index_name = self.client.config.workspace_handle + "_index"
+        self.index_name = f"{self.client.config.workspace_handle}_index"
         self.qa_chatbot_chain = self._get_qa_chain()
         self.fact_checker = FactChecker(self.client)
         self.ledger = Ledger(self.client, self.index_name)
@@ -55,7 +55,7 @@ class AskMyBook(PackageService):
         if mime_type not in SUPPORTED_MIME_TYPES:
             raise SteamshipError("Unsupported mimeType")
 
-        file_path = Path('/tmp/' + name)
+        file_path = Path(f'/tmp/{name}')
         with file_path.open("wb") as f:
             f.write(requests.get(url).content)
 
